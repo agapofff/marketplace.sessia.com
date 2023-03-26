@@ -104,3 +104,11 @@ a.desc:after {
     border: 0;
     box-shadow: none !important;
 }
+
+.form-group {
+    margin-bottom: 1em;
+}
+
+.field-loginform-rememberme {
+    display: none;
+}

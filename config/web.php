@@ -98,6 +98,14 @@ $config = [
                 '<action>'=>'site/<action>',
             ],
         ],
+        
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@yii2mod/user/views' => '@app/views/user',
+                ],
+            ],
+        ],
 
     ],
     'params' => $params,
