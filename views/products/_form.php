@@ -49,8 +49,7 @@ use yii\widgets\ActiveForm;
                         'maxlength' => true
                     ])
             ?>
-
-            <div class="text-center">
+            <div class="text-center pt-2">
                 <?= Html::submitButton(Html::tag('i', '', [
                         'class' => 'fas fa-save'
                     ]) . '&nbsp;' . Yii::t('app', 'Сохранить'), [
