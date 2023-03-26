@@ -5,7 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'sessia-marketplace',
-    'name' => 'Sessia Marketplace',
+    'name' => 'Marketplace',
     'basePath' => dirname(__DIR__),
     'bootstrap' => [
         'log',
@@ -89,7 +89,13 @@ $config = [
             'enableStrictParsing' => false,
             'rules' => [
                 '' => 'site/index',
-                // '<action>'=>'site/<action>',
+                'products' => 'products/index',
+                'products/<action>' => 'products/<action>',
+                'orders' => 'orders/index',
+                'orders/<action>' => 'orders/<action>',             
+                'import' => 'import/index',
+                'import/<action>' => 'import/<action>',
+                '<action>'=>'site/<action>',
             ],
         ],
 

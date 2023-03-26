@@ -31,7 +31,7 @@ $this->registerMetaTag([
 $this->registerLinkTag([
     'rel' => 'icon', 
     'type' => 'image/x-icon', 
-    'href' => Yii::getAlias('@web/favicon.ico')
+    'href' => Yii::getAlias('@web/favicon.png')
 ]);
 
 $menu = [];
@@ -96,7 +96,7 @@ if (Yii::$app->user->isGuest) {
     <header id="header">
     <?php
         NavBar::begin([
-            'brandLabel' => Yii::$app->name,
+            'brandLabel' => Html::img('/images/logo.png') . Yii::$app->name,
             'brandUrl' => Yii::$app->homeUrl,
             'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
         ]);

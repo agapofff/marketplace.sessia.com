@@ -88,3 +88,19 @@ a.desc:after {
     display: flex;
     justify-content: center;
 }
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+.navbar-brand img {
+    height: 27px;
+    margin: 0 10px 0 5px;
+}
+.navbar .navbar-collapse {
+    justify-content: end;
+}
+.navbar-toggler {
+    border: 0;
+    box-shadow: none !important;
+}
