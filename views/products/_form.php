@@ -21,7 +21,6 @@ use yii\widgets\ActiveForm;
                     ->dropDownList(array_keys(Yii::$app->params['marketplace']))
                     ->label('Маркетплейс');
             ?>
-            <br>
             
             <?= $form
                     ->field($model, 'store_id')
@@ -29,7 +28,6 @@ use yii\widgets\ActiveForm;
                         'maxlength' => true
                     ])
             ?>
-            <br>
 
             <?= $form
                     ->field($model, 'sessia_product_id')
@@ -37,7 +35,6 @@ use yii\widgets\ActiveForm;
                         'maxlength' => true
                     ])
             ?>
-            <br>
             
             <?= $form
                     ->field($model, 'marketplace_product_id')
@@ -45,7 +42,6 @@ use yii\widgets\ActiveForm;
                         'maxlength' => true
                     ])
             ?>
-            <br>
             
             <?= $form
                     ->field($model, 'marketplace_product_id_2')
@@ -53,7 +49,6 @@ use yii\widgets\ActiveForm;
                         'maxlength' => true
                     ])
             ?>
-            <br>
 
             <div class="text-center">
                 <?= Html::submitButton(Html::tag('i', '', [
