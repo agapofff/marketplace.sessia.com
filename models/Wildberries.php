@@ -83,6 +83,31 @@ class Wildberries
             throw new Exception('Error ' . $curl->errorCode . ': ' . print_r($curl->responseHeaders));
         }
 
-        return Json::decode($response, false);
+        return Json::decode($response);
+    }
+    
+    public static function getOrdersErrors($orders)
+    {
+        return isset($orders['errors']);
+    }
+    
+    public static function getOrderID($order)
+    {
+        return $order['odid'];
+    }
+    
+    public static function getOrderPrice($order)
+    {
+        return round($order['totalPrice'] * (1 - $order['discountPercent'] / 100));
+    }
+    
+    public static function getProductID($order)
+    {
+        return $order['nmId'] . $order['techSize'];
+    }
+    
+    public static function isOrderCancelled($order)
+    {
+        return $order['isCancel'];
     }
 }

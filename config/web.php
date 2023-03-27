@@ -50,10 +50,26 @@ $config = [
             'errorAction' => 'site/error',
         ],
         'mailer' => [
-            'class' => \yii\symfonymailer\Mailer::class,
-            'viewPath' => '@app/mail',
-            // send all mails to a file by default.
-            'useFileTransport' => true,
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+            'viewPath' => '@common/mail',
+            'htmlLayout' => 'layouts/html',
+            'textLayout' => 'layouts/text',
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.yandex.ru',
+                'username' => 'sessia.marketplace@yandex.ru',
+                'password' => 'marketplaceSessia',
+                'port' => 465,
+                'encryption' => 'ssl',
+                'streamOptions' => [ 
+                    'ssl' => [ 
+                        'allow_self_signed' => true, 
+                        'verify_peer' => false, 
+                        'verify_peer_name' => false, 
+                    ], 
+                ],
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -94,7 +110,7 @@ $config = [
                 'orders' => 'orders/index',
                 'orders/<action>' => 'orders/<action>',             
                 'import' => 'import/index',
-                'import/<action>' => 'import/<action>',
+                'import/<from>' => 'import/index',
                 '<action>'=>'site/<action>',
             ],
         ],
