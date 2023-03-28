@@ -163,7 +163,7 @@ class ImportController extends \yii\web\Controller
                         ->setFrom([
                             Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']
                         ])
-                        ->setTo($params['mailTo'])
+                        ->setTo($params['mailto'])
                         ->setReplyTo(Yii::$app->params['senderEmail'])
                         ->setSubject(Yii::t('app', 'Импорт заказов из маркетплейсов'));
                     $mail->send();
