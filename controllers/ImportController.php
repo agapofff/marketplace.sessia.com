@@ -23,8 +23,8 @@ class ImportController extends \yii\web\Controller
         $marketplaces = $from ? [strtolower($from)] : array_keys(Yii::$app->params['marketplace']);
 
         foreach ($marketplaces as $mp) {
-            if ($mp['active']) {
-                $params = Yii::$app->params['marketplace'][$mp];
+            $params = Yii::$app->params['marketplace'][$mp];
+            if ($params['active']) {
                 $marketplaceName = ucfirst($mp);
                 $marketplace = new $params['class']();
                 
