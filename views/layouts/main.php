@@ -43,24 +43,33 @@ if (Yii::$app->user->isGuest) {
         ]
     ];
 } else {
+    $importLinks = [
+        [
+            'label' => Yii::t('app', 'Из всех маркетплейсов'),
+            'url' => ['/import'],
+            'linkOptions' => [
+                'target' => '_blank',
+            ],
+        ]
+    ];
+    
+    foreach (Yii::$app->params['marketplace'] as $marketplaceName => $marketplace) {
+        if ($marketplace['active']) {
+            $importLinks[] = [
+                'label' => Yii::t('app', 'Из') . ' ' . ucfirst(strtolower($marketplaceName)),
+                'url' => ['/import/' . $marketplaceName],
+                'linkOptions' => [
+                    'target' => '_blank',
+                ],
+            ];
+        }
+    }
+    
     $menu = [
         [
             'label' => Yii::t('app', 'Импорт заказов'), 
             'url' => '#',
-            'items' => [
-                [
-                    'label' => Yii::t('app', 'Из всех маркетплейсов'),
-                    'url' => ['/import'],
-                ],
-                [
-                    'label' => Yii::t('app', 'Из Wildberries'),
-                    'url' => ['/import/wildberries'],
-                ],
-                [
-                    'label' => Yii::t('app', 'Из Wildberries'),
-                    'url' => ['/import/ozon'],
-                ],
-            ],
+            'items' => $importLinks,
         ],
         [
             'label' => 'Товары', 

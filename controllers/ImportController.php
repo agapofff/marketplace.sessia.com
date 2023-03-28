@@ -23,152 +23,155 @@ class ImportController extends \yii\web\Controller
         $marketplaces = $from ? [strtolower($from)] : array_keys(Yii::$app->params['marketplace']);
 
         foreach ($marketplaces as $mp) {
-            $params = Yii::$app->params['marketplace'][$mp];
-            $marketplaceName = ucfirst($mp);
-            $marketplace = new $params['class']();
-            
-            $marketplaceOrders = $marketplace::getOrders($dateFrom);
-// echo VarDumper::dump($marketplaceOrders, 99, true); exit;
-            if ($marketplaceOrders) {
+            if ($mp['active']) {
+                $params = Yii::$app->params['marketplace'][$mp];
+                $marketplaceName = ucfirst($mp);
+                $marketplace = new $params['class']();
                 
-                if ($marketplace::getOrdersErrors($marketplaceOrders)) {
-                    $out[] = Yii::t('front', 'Ошибка получения списка заказов из {0}', [
-                        $marketplaceName,
-                    ]);
-                } else {
-                    foreach ($marketplaceOrders as $k => $marketplaceOrder) {
-    if ($loaded > 0) continue;
-                        $marketplaceOrderID = $marketplace::getOrderID($marketplaceOrder);
-                        $marketplaceProductID = $marketplace::getProductID($marketplaceOrder);
-                        
-                        $sessiaOrder = Orders::findOne([
-                            'marketplace_id' => 1,
-                            'marketplace_order_id' => $marketplaceOrderID,
+                $marketplaceOrders = $marketplace::getOrders($dateFrom);
+    // echo VarDumper::dump($marketplaceOrders, 99, true); exit;
+                if ($marketplaceOrders) {
+                    
+                    if ($marketplace::getOrdersErrors($marketplaceOrders)) {
+                        $out[] = Yii::t('app', 'Ошибка получения списка заказов из {0}', [
+                            $marketplaceName,
                         ]);
-                        
-                        if ($sessiaOrder) {
-                            if ($marketplace::isOrderCancelled($marketplaceOrder) && $sessiaOrder->status !== 'cancel') {
-                                $sessiaOrder->status = 'cancel';
-                                $sessiaOrder->updated_at = date('Y-m-d H:i:s');
-                                $sessiaOrder->save();
-                                // todo: метод смены статуса заказа в CRM
-                            }
-                        } else {
-                            $marketplaceProduct = Products::findOne([
+                    } else {
+                        foreach ($marketplaceOrders as $k => $marketplaceOrder) {
+        if ($loaded > 0) continue;
+                            $marketplaceOrderID = $marketplace::getOrderID($marketplaceOrder);
+                            $marketplaceProductID = $marketplace::getProductID($marketplaceOrder);
+                            
+                            $sessiaOrder = Orders::findOne([
                                 'marketplace_id' => 1,
-                                'marketplace_product_id' => $marketplaceProductID,
+                                'marketplace_order_id' => $marketplaceOrderID,
                             ]);
+                            
+                            if ($sessiaOrder) {
+                                if ($marketplace::isOrderCancelled($marketplaceOrder) && $sessiaOrder->status !== 'cancel') {
+                                    $sessiaOrder->status = 'cancel';
+                                    $sessiaOrder->updated_at = date('Y-m-d H:i:s');
+                                    $sessiaOrder->save();
+                                    // todo: метод смены статуса заказа в CRM
+                                }
+                            } else {
+                                $marketplaceProduct = Products::findOne([
+                                    'marketplace_id' => 1,
+                                    'marketplace_product_id' => $marketplaceProductID,
+                                ]);
 
-                            if ($marketplaceProduct) {
-                                $sessiaProduct = Sessia::getProduct($marketplaceProduct->sessia_product_id);
-    // echo $sessiaProduct['store']['id'];
-    // echo '<hr>';
-    // echo VarDumper::dump($sessiaProduct, 99, true); exit;
-                                if ($sessiaProduct && isset($sessiaProduct['id'])) {
-                                    $orderSum = $marketplace::getOrderPrice($marketplaceOrder);
-                                    $discount = (float)$sessiaProduct['price'] - $orderSum;
-                                    
-                                    $orderParams = [
-                                        'delivery_method' => 72216,
-                                        'delivery_address' => [
-                                            'country' => 1,
-                                            'city' => 3,
-                                            'city_name' => 'Москва',
-                                            'post_code' => '101000',
-                                            'address1' => 'Москва',
-                                            'full_name' => $params['user']['name'],
-                                        ],
-                                        'products' => [
-                                            [
-                                                'goods' => $marketplaceProduct->sessia_product_id,
-                                                'quantity' => 1,
-                                            ]
-                                        ],
-                                        'payment_service' => 5,
-                                        'name' => $params['user']['name'],
-                                        'email' => $params['user']['email'],
-                                        'country_code' => '+7',
-                                        'phone' => $params['user']['phone'],
-                                        'lang_id' => 1,
-                                        'response_lang_id' => 1,
-                                        // 'ext_discount' => $discount,
-                                        'comment' => $marketplaceOrderID,
-                                    ];
-                                    
-                                    $newOrder = Sessia::createOrder($sessiaProduct['store']['id'], $orderParams);
-                                    
-                                    if ($newOrder) {
-    // echo VarDumper::dump($newOrder, 99, true); exit; 
-                                        if (isset($newOrder['id'])) {
-                                            $order = new Orders();
-                                            $order->marketplace_id = 1;
-                                            $order->marketplace_order_id = (string)$marketplaceOrderID;
-                                            $order->sessia_order_id = (string)$newOrder['id'];
-                                            $order->request = Json::encode($orderParams);
-                                            $order->response = Json::encode($newOrder);
-                                            $order->sum = $orderSum;
-                                            $order->created_at = date('Y-m-d H:i:s');
-                                            $order->updated_at = date('Y-m-d H:i:s');
-                                            $order->status = 'new';
-                                            
-                                            if ($order->save()) {
-                                                $out[] = Yii::t('front', 'Заказ {0} из {1} успешно загружен: {2}', [
-                                                    $marketplaceOrderID,
-                                                    $marketplaceName,
-                                                    Html::a($newOrder['id'], 'https://crm.sessia.com/shop/orders/edit/' . $newOrder['id'])
-                                                ]);
-                                                $loaded++;
+                                if ($marketplaceProduct) {
+                                    $sessiaProduct = Sessia::getProduct($marketplaceProduct->sessia_product_id);
+        // echo $sessiaProduct['store']['id'];
+        // echo '<hr>';
+        // echo VarDumper::dump($sessiaProduct, 99, true); exit;
+                                    if ($sessiaProduct && isset($sessiaProduct['id'])) {
+                                        $orderSum = $marketplace::getOrderPrice($marketplaceOrder);
+                                        $discount = (float)$sessiaProduct['price'] - $orderSum;
+                                        
+                                        $orderParams = [
+                                            'delivery_method' => 72216,
+                                            'delivery_address' => [
+                                                'country' => 1,
+                                                'city' => 3,
+                                                'city_name' => 'Москва',
+                                                'post_code' => '101000',
+                                                'address1' => 'Москва',
+                                                'full_name' => $params['user']['name'],
+                                            ],
+                                            'products' => [
+                                                [
+                                                    'goods' => $marketplaceProduct->sessia_product_id,
+                                                    'quantity' => 1,
+                                                ]
+                                            ],
+                                            'payment_service' => 5,
+                                            'name' => $params['user']['name'],
+                                            'email' => $params['user']['email'],
+                                            'country_code' => '+7',
+                                            'phone' => $params['user']['phone'],
+                                            'lang_id' => 1,
+                                            'response_lang_id' => 1,
+                                            // 'ext_discount' => $discount,
+                                            'comment' => $marketplaceOrderID,
+                                        ];
+                                        
+                                        $newOrder = Sessia::createOrder($sessiaProduct['store']['id'], $orderParams);
+                                        
+                                        if ($newOrder) {
+        // echo VarDumper::dump($newOrder, 99, true); exit; 
+                                            if (isset($newOrder['id'])) {
+                                                $order = new Orders();
+                                                $order->marketplace_id = 1;
+                                                $order->marketplace_order_id = (string)$marketplaceOrderID;
+                                                $order->sessia_order_id = (string)$newOrder['id'];
+                                                $order->request = Json::encode($orderParams);
+                                                $order->response = Json::encode($newOrder);
+                                                $order->sum = $orderSum;
+                                                $order->created_at = date('Y-m-d H:i:s');
+                                                $order->updated_at = date('Y-m-d H:i:s');
+                                                $order->status = 'new';
+                                                
+                                                if ($order->save()) {
+                                                    $out[] = Yii::t('app', 'Заказ {0} из {1} успешно загружен: {2}', [
+                                                        $marketplaceOrderID,
+                                                        $marketplaceName,
+                                                        Html::a($newOrder['id'], 'https://crm.sessia.com/shop/orders/edit/' . $newOrder['id'])
+                                                    ]);
+                                                    $loaded++;
+                                                } else {
+                                                    $out[] = Yii::t('app', 'Ошибка загрузки заказа {0} из {1}', [
+                                                        $marketplaceOrderID,
+                                                        $marketplaceName,
+                                                    ]) . ': ' . print_r($order->getErrors(), true);
+                                                }
                                             } else {
-                                                $out[] = Yii::t('front', 'Ошибка загрузки заказа {0} из {1}', [
+                                                $out[] = Yii::t('app', 'Ошибка загрузки заказа {0} из {1}', [
                                                     $marketplaceOrderID,
                                                     $marketplaceName,
-                                                ]) . ': ' . print_r($order->getErrors(), true);
+                                                ]) . ': ' . print_r($newOrder, true);
                                             }
                                         } else {
-                                            $out[] = Yii::t('front', 'Ошибка загрузки заказа {0} из {1}', [
+                                            $out[] = Yii::t('app', 'Ошибка создания заказа {0} из {1} в Sessia', [
                                                 $marketplaceOrderID,
                                                 $marketplaceName,
-                                            ]) . ': ' . print_r($newOrder, true);
+                                            ]);
                                         }
                                     } else {
-                                        $out[] = Yii::t('front', 'Ошибка создания заказа {0} из {1} в Sessia', [
+                                        $out[] = Yii::t('app', 'Ошибка сопоставления товара {0} с CRM при загрузке заказа {1} из {2}', [
+                                            $marketplaceProductID,
                                             $marketplaceOrderID,
                                             $marketplaceName,
                                         ]);
                                     }
-                                } else {
-                                    $out[] = Yii::t('front', 'Ошибка сопоставления товара {0} с CRM при загрузке заказа {1} из {2}', [
-                                        $marketplaceProductID,
-                                        $marketplaceOrderID,
-                                        $marketplaceName,
-                                    ]);
                                 }
                             }
                         }
                     }
+                } else {
+                    $out[] = Yii::t('app', 'Ошибка загрузки списка заказов из {0}', [
+                        $marketplaceName,
+                    ]);
                 }
-            } else {
-                $out[] = Yii::t('front', 'Ошибка загрузки списка заказов из {0}', [
-                    $marketplaceName,
-                ]);
-            }
-            
-            if ($out) {
-                // echo VarDumper::dump($out, 99, true);
                 
-                $mail = Yii::$app->mailer
-                    ->compose('default', [
-                        'content' => print_r($out, true)
-                    ])
-                    ->setFrom([
-                        Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']
-                    ])
-                    ->setTo($params['mailTo'])
-                    ->setReplyTo(Yii::$app->params['senderEmail'])
-                    ->setSubject(Yii::t('front', 'Импорт заказов из маркетплейсов'));
-                $mail->send();
+                if ($out) {
+                    // echo VarDumper::dump($out, 99, true);
+                    $mail = Yii::$app->mailer
+                        ->compose('default', [
+                            'content' => '<p>'. join('</p><p>', $out) . '</p>'
+                        ])
+                        ->setFrom([
+                            Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']
+                        ])
+                        ->setTo($params['mailTo'])
+                        ->setReplyTo(Yii::$app->params['senderEmail'])
+                        ->setSubject(Yii::t('app', 'Импорт заказов из маркетплейсов'));
+                    $mail->send();
+                }
             }
         }
+        
+        return VarDumper::dump($out, 99, true);
     }
     
     public function actionGetSupplies($next = 0, $data = [])

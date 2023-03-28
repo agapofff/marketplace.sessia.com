@@ -10,18 +10,23 @@ return [
         'url' => 'https://api.sessia.com/api',
     ],    
     'marketplace' => [
-        // 'ozon' => [
-            // 'class' => 'models\Ozon',
-            // 'url' => 'https://api-seller.ozon.ru',
-            // 'clientID' => '786171', // 472899
-            // 'apiKey' => '61e1a701-587f-496d-8034-f6a121618e3c',
-            // 'user' => [
-                // 'name' => 'Маркетплейсов Озон Дмитриевич',
-                // 'email' => 'sessia.ozon@yandex.ru',
-                // 'phone' => '+79000006966',
-            // ],
-        // ],
+        'ozon' => [
+            'active' => false,
+            'class' => 'models\Ozon',
+            'url' => 'https://api-seller.ozon.ru',
+            'clientID' => '786171', // 472899
+            'apiKey' => '61e1a701-587f-496d-8034-f6a121618e3c',
+            'user' => [
+                'name' => 'Маркетплейсов Озон Дмитриевич',
+                'email' => 'sessia.ozon@yandex.ru',
+                'phone' => '+79000006966',
+            ],
+            'mailto' => [
+                'agapofff@gmail.com',
+            ],
+        ],
         'wildberries' => [
+            'active' => true,
             'class' => '\app\models\Wildberries',
             'suppliers' => [
                 'url' => 'https://suppliers-api.wildberries.ru',
@@ -37,7 +42,7 @@ return [
                 'phone' => '+79000925344',
             ],
             'mailto' => [
-                'agapofff@gmail.com'
+                'agapofff@gmail.com',
             ],
         ],
     ],
