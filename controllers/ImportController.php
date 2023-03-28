@@ -92,7 +92,7 @@ class ImportController extends \yii\web\Controller
                                             'phone' => $params['user']['phone'],
                                             'lang_id' => 1,
                                             'response_lang_id' => 1,
-                                            // 'ext_discount' => $discount,
+                                            'ext_discount' => $discount,
                                             'comment' => $marketplaceOrderID,
                                         ];
                                         
