@@ -38,7 +38,8 @@ class ImportController extends \yii\web\Controller
                         ]);
                     } else {
                         foreach ($marketplaceOrders as $k => $marketplaceOrder) {
-        if ($loaded > 0) continue;
+                            if ($loaded > Yii::$app->params['marketplaceImportLimit']) continue;
+                            
                             $marketplaceOrderID = $marketplace::getOrderID($marketplaceOrder);
                             $marketplaceProductID = $marketplace::getProductID($marketplaceOrder);
                             
