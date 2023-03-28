@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'adminEmail' => 'admin@example.com',
-    'senderEmail' => 'noreply@example.com',
-    'senderName' => 'Example.com mailer',
+    'adminEmail' => 'sessia.marketplace@yandex.ru',
+    'senderEmail' => 'sessia.marketplace@yandex.ru',
+    'senderName' => 'SESSIA Marketplace',
     'user.passwordResetTokenExpire' => 3600,
     'bsVersion' => '5.x',
     'sessia' => [
