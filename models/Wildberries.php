@@ -96,14 +96,25 @@ class Wildberries
         return $order['odid'];
     }
     
-    public static function getOrderPrice($order)
+    public static function getOrderSum($order)
     {
         return round($order['totalPrice'] * (1 - $order['discountPercent'] / 100));
     }
     
-    public static function getProductID($order)
+    public static function getOrderProducts($order)
     {
-        return $order['nmId'] . $order['techSize'];
+        return [
+            [
+                'id' => $order['nmId'] . $order['techSize'],
+                'count' => 1,
+                'price' => self::getOrderSum($order)
+            ]
+        ];
+    }
+    
+    public static function getProductPrice($order, $productID)
+    {
+        return round($order['totalPrice'] * (1 - $order['discountPercent'] / 100));
     }
     
     public static function isOrderCancelled($order)
