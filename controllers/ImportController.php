@@ -91,17 +91,15 @@ class ImportController extends \yii\web\Controller
 // echo VarDumper::dump($sessiaProduct, 99, true); exit;
 
                                     if ($sessiaProduct && isset($sessiaProduct['id'])) {
-                                        $productCount = (int)$marketplaceProduct['count'];
-                                        
                                         $storeID = $storeID != $sessiaProduct['store']['id'] ? $sessiaProduct['store']['id'] : $storeID;
                                         
-                                        $sessiaOrderSum += (float)$sessiaProduct['price'] * $productCount;
+                                        $sessiaOrderSum += $sessiaProduct['price'] * $marketplaceProduct['count'];
                                         
-                                        $marketplaceOrderSum += (float)$marketplaceProduct['price'] * $productCount;
+                                        $marketplaceOrderSum += $marketplaceProduct['price'] * $marketplaceProduct['count'];
                                         
-                                        $orderProducts[] =                                     [
-                                            'goods' => $marketplaceProduct->sessia_product_id,
-                                            'quantity' => $productCount,
+                                        $orderProducts[] = [
+                                            'goods' => $product->sessia_product_id,
+                                            'quantity' => $marketplaceProduct['count'],
                                         ];
                                     } else {
                                         $out[] = Yii::t('app', 'Ошибка сопоставления товара {0} с CRM при загрузке заказа {1} из {2}', [
@@ -129,7 +127,7 @@ class ImportController extends \yii\web\Controller
                                     $order->sessia_order_id = (string)$newOrder['id'];
                                     $order->request = Json::encode($orderParams);
                                     $order->response = Json::encode($newOrder);
-                                    $order->sum = $orderSum;
+                                    $order->sum = $sessiaOrderSum;
                                     $order->created_at = date('Y-m-d H:i:s');
                                     $order->updated_at = date('Y-m-d H:i:s');
                                     $order->status = 'new';
