@@ -89,7 +89,7 @@ class ImportController extends \yii\web\Controller
 
                                 if ($product) {
                                     $sessiaProduct = Sessia::getProduct($product->sessia_product_id);
-// echo VarDumper::dump($sessiaProduct, 99, true); exit;
+echo VarDumper::dump($sessiaProduct, 99, true); exit;
 
                                     if ($sessiaProduct && isset($sessiaProduct['id'])) {
                                         $productCount = (int)$marketplaceProduct['count'];
