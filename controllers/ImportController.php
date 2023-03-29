@@ -34,13 +34,12 @@ class ImportController extends \yii\web\Controller
             $marketplaceOrders = $marketplace::getOrders($dateFrom);
 // echo VarDumper::dump($marketplaceOrders, 99, true); exit;
             if ($marketplaceOrders) {
-                
                 if ($marketplace::getOrdersErrors($marketplaceOrders)) {
                     $out[] = Yii::t('app', 'Ошибка получения списка заказов из {0}', $marketplaceName);
                 } else {
                     foreach ($marketplaceOrders as $k => $marketplaceOrder) {
                         if ($loaded == Yii::$app->params['marketplaceImportLimit']) continue;
-                        
+// echo VarDumper::dump($marketplaceOrder, 99, true); exit;
                         $orderProducts = [];
                         $storeID = null;
                         $sessiaOrderSum = $marketplaceOrderSum = 0;
@@ -79,8 +78,8 @@ class ImportController extends \yii\web\Controller
                                 // todo: метод смены статуса заказа в CRM
                             }
                         } else {
-                            $marketplaceProducts = $marketplace::getOrderProducts($order);
-                            
+                            $marketplaceProducts = $marketplace::getOrderProducts($marketplaceOrder);
+// echo VarDumper::dump($marketplaceProducts, 99, true); exit;
                             foreach ($marketplaceProducts as $marketplaceProduct) {
                                 $product = Products::findOne([
                                     'marketplace_id' => $marketplaceID,
@@ -89,7 +88,7 @@ class ImportController extends \yii\web\Controller
 
                                 if ($product) {
                                     $sessiaProduct = Sessia::getProduct($product->sessia_product_id);
-echo VarDumper::dump($sessiaProduct, 99, true); exit;
+// echo VarDumper::dump($sessiaProduct, 99, true); exit;
 
                                     if ($sessiaProduct && isset($sessiaProduct['id'])) {
                                         $productCount = (int)$marketplaceProduct['count'];
@@ -115,8 +114,9 @@ echo VarDumper::dump($sessiaProduct, 99, true); exit;
                             }
                             
                             $orderParams['products'] = $orderProducts;
-                            $discount = $sessiaOrderSum - $marketplaceOrderSum;
-                            $orderParams['ext_discount'] = $discount > 0 ? $discount : 0;
+                            // $discount = $sessiaOrderSum - $marketplaceOrderSum;
+                            // $orderParams['ext_discount'] = $discount > 0 ? $discount : 0;
+                            $orderParams['ext_discount'] = $sessiaOrderSum - $marketplaceOrderSum;
                             
                             $newOrder = Sessia::createOrder($storeID, $orderParams);
                             
