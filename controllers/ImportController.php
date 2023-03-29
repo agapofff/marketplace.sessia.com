@@ -25,7 +25,7 @@ class ImportController extends \yii\web\Controller
         foreach ($marketplaceList as $marketplaceKey) {
             $params = Yii::$app->params['marketplace'][$marketplaceKey];
             $marketplaceID = array_search($marketplaceKey, array_keys(Yii::$app->params['marketplace']));
-            
+echo $marketplaceID; exit;
             if (!$params['active']) continue;
         
             $marketplaceName = ucfirst($marketplaceKey);
