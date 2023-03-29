@@ -110,52 +110,54 @@ class ImportController extends \yii\web\Controller
                                     }
                                 }
                             }
-                            
-                            $orderParams['products'] = $orderProducts;
-                            $discount = $sessiaOrderSum - $marketplaceOrderSum;
-                            $orderParams['ext_discount'] = $discount > 0 ? $discount : 0;
-                            // $orderParams['ext_discount'] = $sessiaOrderSum - $marketplaceOrderSum;
-                            
-                            $newOrder = Sessia::createOrder($storeID, $orderParams);
-                            
-                            if ($newOrder) {
-// echo VarDumper::dump($newOrder, 99, true); exit; 
-                                if (isset($newOrder['id'])) {
-                                    $order = new Orders();
-                                    $order->marketplace_id = $marketplaceID;
-                                    $order->marketplace_order_id = (string)$marketplaceOrderID;
-                                    $order->sessia_order_id = (string)$newOrder['id'];
-                                    $order->request = Json::encode($orderParams);
-                                    $order->response = Json::encode($newOrder);
-                                    $order->sum = $sessiaOrderSum;
-                                    $order->created_at = date('Y-m-d H:i:s');
-                                    $order->updated_at = date('Y-m-d H:i:s');
-                                    $order->status = 'new';
-                                    
-                                    if ($order->save()) {
-                                        $out[] = Yii::t('app', 'Заказ {0} из {1} успешно загружен: {2}', [
-                                            $marketplaceOrderID,
-                                            $marketplaceName,
-                                            Html::a($newOrder['id'], 'https://crm.sessia.com/shop/orders/edit/' . $newOrder['id'])
-                                        ]);
-                                        $loaded++;
+                                
+                            if (!empty($orderProducts)) {
+                                $orderParams['products'] = $orderProducts;
+                                $discount = $sessiaOrderSum - $marketplaceOrderSum;
+                                $orderParams['ext_discount'] = $discount > 0 ? $discount : 0;
+                                // $orderParams['ext_discount'] = $sessiaOrderSum - $marketplaceOrderSum;
+                                
+                                $newOrder = Sessia::createOrder($storeID, $orderParams);
+                                
+                                if ($newOrder) {
+    // echo VarDumper::dump($newOrder, 99, true); exit; 
+                                    if (isset($newOrder['id'])) {
+                                        $order = new Orders();
+                                        $order->marketplace_id = $marketplaceID;
+                                        $order->marketplace_order_id = (string)$marketplaceOrderID;
+                                        $order->sessia_order_id = (string)$newOrder['id'];
+                                        $order->request = Json::encode($orderParams);
+                                        $order->response = Json::encode($newOrder);
+                                        $order->sum = $sessiaOrderSum;
+                                        $order->created_at = date('Y-m-d H:i:s');
+                                        $order->updated_at = date('Y-m-d H:i:s');
+                                        $order->status = 'new';
+                                        
+                                        if ($order->save()) {
+                                            $out[] = Yii::t('app', 'Заказ {0} из {1} успешно загружен: {2}', [
+                                                $marketplaceOrderID,
+                                                $marketplaceName,
+                                                Html::a($newOrder['id'], 'https://crm.sessia.com/shop/orders/edit/' . $newOrder['id'])
+                                            ]);
+                                            $loaded++;
+                                        } else {
+                                            $out[] = Yii::t('app', 'Ошибка загрузки заказа {0} из {1}', [
+                                                $marketplaceOrderID,
+                                                $marketplaceName,
+                                            ]) . ': ' . print_r($order->getErrors(), true);
+                                        }
                                     } else {
                                         $out[] = Yii::t('app', 'Ошибка загрузки заказа {0} из {1}', [
                                             $marketplaceOrderID,
                                             $marketplaceName,
-                                        ]) . ': ' . print_r($order->getErrors(), true);
+                                        ]) . ': ' . print_r($newOrder, true) . ' \ ' . print_r($orderParams, true) . ' \ ' . print_r($marketplaceOrder, true);
                                     }
                                 } else {
-                                    $out[] = Yii::t('app', 'Ошибка загрузки заказа {0} из {1}', [
+                                    $out[] = Yii::t('app', 'Ошибка создания заказа {0} из {1} в Sessia', [
                                         $marketplaceOrderID,
                                         $marketplaceName,
-                                    ]) . ': ' . print_r($newOrder, true) . ' \ ' . print_r($orderParams, true) . ' \ ' . print_r($marketplaceOrder, true);
+                                    ]);
                                 }
-                            } else {
-                                $out[] = Yii::t('app', 'Ошибка создания заказа {0} из {1} в Sessia', [
-                                    $marketplaceOrderID,
-                                    $marketplaceName,
-                                ]);
                             }
                         }
                     }
