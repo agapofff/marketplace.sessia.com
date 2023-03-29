@@ -144,13 +144,13 @@ class ImportController extends \yii\web\Controller
                                             $out[] = Yii::t('app', 'Ошибка загрузки заказа {0} из {1}', [
                                                 $marketplaceOrderID,
                                                 $marketplaceName,
-                                            ]) . ': ' . print_r($order->getErrors(), true);
+                                            ]); // . ': ' . print_r($order->getErrors(), true);
                                         }
                                     } else {
                                         $out[] = Yii::t('app', 'Ошибка загрузки заказа {0} из {1}', [
                                             $marketplaceOrderID,
                                             $marketplaceName,
-                                        ]) . ': ' . print_r($newOrder, true) . ' \ ' . print_r($orderParams, true) . ' \ ' . print_r($marketplaceOrder, true);
+                                        ]); // . ': ' . print_r($newOrder, true) . ' \ ' . print_r($orderParams, true) . ' \ ' . print_r($marketplaceOrder, true);
                                     }
                                 } else {
                                     $out[] = Yii::t('app', 'Ошибка создания заказа {0} из {1} в Sessia', [
@@ -183,105 +183,5 @@ class ImportController extends \yii\web\Controller
         }
         
         return VarDumper::dump($out, 99, true);
-    }
-    
-    public function actionGetSupplies($next = 0, $data = [])
-    {
-        $response = Yii::$app->runAction('curl', [
-            'url' => Yii::$app->params['marketplace']['wildberries']['url'] . '/api/v3/supplies',
-            'headers' => json_encode([
-                'Authorization' => Yii::$app->params['marketplace']['wildberries']['token'],
-            ]),
-            'params' => json_encode([
-                'limit' => 1000,
-                'next' => $next,
-            ]),
-        ]);
-        
-echo $response; exit;
-        
-        if ($response) {
-            $orders = json_decode($response);
-            if ($orders->supplies) {
-                foreach ($orders->supplies as $order) {
-                    $data[] = $order;
-                }
-            }
-            
-            if ($orders->next) {
-                $data = $this->actionGetSupplies($orders->next, $data);
-            }
-        } else {
-            throw new Exception(print_r($response));
-        }
-        
-        // return $data;
-        echo VarDumper::dump($data, 99, true);
-        exit;
-    }
-    
-    public function actionGetSupply($id)
-    {
-        $response = Yii::$app->runAction('curl', [
-            'url' => Yii::$app->params['wildberries']['url'] . '/api/v3/supplies/' . $id,
-            'headers' => json_encode([
-                'Authorization' => Yii::$app->params['wildberries']['token'],
-            ]),
-        ]);
-        
-        if ($response) {
-            return $response;
-        } else {
-            throw new Exception(print_r($response));
-        }
-    }
-    
-    public function actionGetSupplyOrders($id)
-    {
-        $response = Yii::$app->runAction('curl', [
-            'url' => Yii::$app->params['wildberries']['url'] . '/api/v3/supplies/' . $id . '/orders',
-            'headers' => json_encode([
-                'Authorization' => Yii::$app->params['wildberries']['token'],
-            ]),
-        ]);
-        
-        if ($response) {
-            return $response;
-        } else {
-            throw new Exception(print_r($response));
-        }
-    }
-    
-    public function actionGetNewOrders()
-    {
-        $orders = Yii::$app->runAction('curl', [
-            'url' => Yii::$app->params['wildberries']['url'] . '/api/v3/orders/new',
-            'headers' => json_encode([
-                'Authorization' => Yii::$app->params['wildberries']['token'],
-            ]),
-        ]);
-        
-        // return $data;
-        echo VarDumper::dump(json_decode($orders), 99, true);
-        exit;
-    }
-    
-    public function actionGetSales($dateFrom = null)
-    {
-        if (!$dateFrom) $dateFrom = date('Y-m-d');
-        
-        $response = Yii::$app->runAction('curl', [
-            'url' => Yii::$app->params['wildberries']['url'] . '/api/v1/supplier/sales',
-            'headers' => json_encode([
-                'Authorization' => Yii::$app->params['wildberries']['token'],
-            ]),
-            'params' => json_encode([
-                'dateFrom' => $dateFrom,
-            ]),
-        ]);
-        
-        // return $data;
-        echo VarDumper::dump(json_decode($orders), 99, true);
-        exit;
     }
 }
