@@ -149,7 +149,7 @@ class ImportController extends \yii\web\Controller
                                     $out[] = Yii::t('app', 'Ошибка загрузки заказа {0} из {1}', [
                                         $marketplaceOrderID,
                                         $marketplaceName,
-                                    ]) . ': ' . print_r($newOrder, true) . ' \ ' . print_r($orderParams, true);
+                                    ]) . ': ' . print_r($newOrder, true) . ' \ ' . print_r($orderParams, true) . ' \ ' . print_r($marketplaceOrder, true);
                                 }
                             } else {
                                 $out[] = Yii::t('app', 'Ошибка создания заказа {0} из {1} в Sessia', [
