@@ -67,7 +67,7 @@ class ImportController extends \yii\web\Controller
                         ];
                         
                         $sessiaOrder = Orders::findOne([
-                            'marketplace_id' => marketplaceID,
+                            'marketplace_id' => $marketplaceID,
                             'marketplace_order_id' => $marketplaceOrderID,
                         ]);
                         
@@ -83,7 +83,7 @@ class ImportController extends \yii\web\Controller
                             
                             foreach ($marketplaceProducts as $marketplaceProduct) {
                                 $product = Products::findOne([
-                                    'marketplace_id' => marketplaceID,
+                                    'marketplace_id' => $marketplaceID,
                                     'marketplace_product_id' => $marketplaceProduct['id'],
                                 ]);
 
@@ -124,7 +124,7 @@ class ImportController extends \yii\web\Controller
 // echo VarDumper::dump($newOrder, 99, true); exit; 
                                 if (isset($newOrder['id'])) {
                                     $order = new Orders();
-                                    $order->marketplace_id = marketplaceID;
+                                    $order->marketplace_id = $marketplaceID;
                                     $order->marketplace_order_id = (string)$marketplaceOrderID;
                                     $order->sessia_order_id = (string)$newOrder['id'];
                                     $order->request = Json::encode($orderParams);
