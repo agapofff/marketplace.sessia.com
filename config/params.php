@@ -12,10 +12,11 @@ return [
     'marketplaceImportLimit' => 1, // сколько заказов заливать за одну синхронизацию
     'marketplace' => [
         'ozon' => [
-            'active' => false,
-            'class' => 'models\Ozon',
+            'active' => true,
+            'class' => '\app\models\Ozon',
             'url' => 'https://api-seller.ozon.ru',
-            'clientID' => '786171', // 472899
+            'clientID' => '472899',
+            // 'clientID' => '786171',
             'apiKey' => '61e1a701-587f-496d-8034-f6a121618e3c',
             'user' => [
                 'name' => 'Маркетплейсов Озон Дмитриевич',

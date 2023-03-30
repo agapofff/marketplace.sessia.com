@@ -10,53 +10,99 @@ use yii\base\Exception;
 
 class Ozon
 {
-    public function getSupplies($data = [], $next = 0, $limit = 1000)
+    public static function getOrders($dateFrom, $orders = [], $offset = 0, $limit = 100)
     {
-        $curl = new curl\Curl();
+        $params = Yii::$app->params['marketplace']['ozon'];
         
+        $curl = new curl\Curl();
+
         $response = $curl
             ->setHeaders([
-                'Authorization' => Yii::$app->params['marketplace']['wildberries']['token'],
+                'Client-Id' => $params['clientID'],
+                'Api-Key' => $params['apiKey'],
             ])
-            ->setGetParams([
+            ->setRequestBody(Json::encode([
+                'dir' => 'ASC',
+                'filter' => [
+                    'since' => date('Y-m-d', strtotime($dateFrom)) . 'T' . date('H:i:s', strtotime($dateFrom)) . '.000Z',
+                    'to' => date('Y-m-d') . 'T' . date('H:i:s') . '.000Z',
+                ],
                 'limit' => $limit,
-                'next' => $next,
-            ])
-            ->get(Yii::$app->params['marketplace']['wildberries']['url'] . '/api/v3/supplies');
+                'offset' => $offset,
+                'translit' => true,
+            ]))
+            ->post($params['url'] . '/v3/posting/fbs/list');
 
         if ($curl->errorCode !== null) {
-            throw new HttpException($curl->errorCode, VarDumper::dump($curl->responseHeaders, 99, true));
+            throw new Exception('Error ' . $curl->errorCode . ': ' . print_r($curl->responseHeaders));
         }
-
-        $response = json_decode($response);
         
-        if ($response->supplies) {
-            foreach ($response->supplies as $supply) {
-                $data[] = $supply;
+        $response = Json::decode($response);
+        
+        if (isset($response['message'])) {
+            return $response;
+        }
+        
+        if (isset($response['result'])) {
+            $result = $response['result'];
+            if ($result['postings']) {
+                foreach ($result['postings'] as $posting) {
+                    $orders[] = $posting;
+                }
+            }
+            if ($result['has_next']) {
+                $offset = $offset + $limit;
+                $orders = self::getOrders($dateFrom, $orders, $offset, $limit);
             }
         }
-        
-        if ($response->next) {
-            $data = $this->getSupplies($data, $response->next, $limit);
+
+        return $orders;
+    }
+    
+    public static function getOrdersErrors($orders)
+    {
+        return isset($orders['message']);
+    }
+    
+    public static function getOrderID($order)
+    {
+        return $order['order_id'];
+    }
+    
+    public static function getOrderSum($order)
+    {
+        $sum = 0;
+        foreach ($order['products'] as $product) {
+            $sum += (float)$product['price'] * $product['quantity'];
         }
-        
+        return $sum;
+    }
+    
+    public static function getOrderProducts($order)
+    {
+        $data = [];
+        foreach ($order['products'] as $product) {
+            $data[] = [
+                'id' => $product['sku'],
+                'count' => $product['quantity'],
+                'price' => (float)$product['price'],
+            ];
+        }
         return $data;
     }
     
-    public function getSupplyOrders($id)
+    public static function getProductPrice($order, $productID)
     {
-        $curl = new curl\Curl();
-        
-        $response = $curl
-            ->setHeaders([
-                'Authorization' => Yii::$app->params['marketplace']['wildberries']['token'],
-            ])
-            ->get(Yii::$app->params['marketplace']['wildberries']['url'] . '/api/v3/supplies/' . $id . '/orders');
-
-        if ($curl->errorCode !== null) {
-            throw new HttpException($curl->errorCode, VarDumper::dump($curl->responseHeaders, 99, true));
+        foreach ($order['products'] as $product) {
+            if ($product['sku'] == $productID) {
+                return (float)$product['price'];
+            }
         }
-
-        return json_decode($response);
+        return false;
+    }
+    
+    public static function isOrderCancelled($order)
+    {
+        return $order['status'] == 'cancelled';
     }
 }

@@ -21,7 +21,7 @@ class ImportController extends \yii\web\Controller
         $dateFrom = $date ? date('Y-m-d 00:00:00', strtotime($date)) : date('Y-m-d', strtotime('-1 month'));
         
         $marketplaceList = $from ? [strtolower($from)] : array_keys(Yii::$app->params['marketplace']);
-
+// echo VarDumper::dump($marketplaceList, 99, true); exit;
         foreach ($marketplaceList as $marketplaceKey) {
             $params = Yii::$app->params['marketplace'][$marketplaceKey];
             $marketplaceID = array_search($marketplaceKey, array_keys(Yii::$app->params['marketplace']));
@@ -32,7 +32,7 @@ class ImportController extends \yii\web\Controller
             $marketplace = new $params['class']();
             
             $marketplaceOrders = $marketplace::getOrders($dateFrom);
-// echo VarDumper::dump($marketplaceOrders, 99, true); exit;
+echo VarDumper::dump($marketplaceOrders, 99, true); exit;
             if ($marketplaceOrders) {
                 if ($marketplace::getOrdersErrors($marketplaceOrders)) {
                     $out[] = Yii::t('app', 'Ошибка получения списка заказов из {0}', $marketplaceName);
