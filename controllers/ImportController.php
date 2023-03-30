@@ -46,7 +46,7 @@ class ImportController extends \yii\web\Controller
                         $marketplaceOrderID = $marketplace::getOrderID($marketplaceOrder);
                         
                         $orderParams = [
-                            'delivery_method' => 72216,
+                            'delivery_method' => 74175,
                             'delivery_address' => [
                                 'country' => 1,
                                 'city' => 3,
