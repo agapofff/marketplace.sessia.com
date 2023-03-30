@@ -121,4 +121,9 @@ class Wildberries
     {
         return $order['isCancel'];
     }
+    
+    public static function getOrderDate($order)
+    {
+        return date('d.m.Y H:i', strtotime($order['date']));
+    }
 }
