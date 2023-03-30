@@ -9,7 +9,7 @@ return [
     'sessia' => [
         'url' => 'https://api.sessia.com/api',
     ],    
-    'marketplaceImportLimit' => 5, // сколько заказов заливать за одну синхронизацию
+    'marketplaceImportLimit' => 10, // сколько заказов заливать за одну синхронизацию
     'marketplace' => [
         'ozon' => [
             'active' => true,
