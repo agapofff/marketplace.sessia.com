@@ -104,34 +104,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             'class' => 'text-center'
                         ],
                     ],
-                    
-                    [
-                        'attribute' => 'marketplace_product_id_2',
-                        'filterInputOptions' => [
-                            'class' => 'form-control text-center',
-                            'placeholder' => 'Поиск...'
-                        ],
-                        'headerOptions' => [
-                            'class' => 'text-center'
-                        ],
-                        'contentOptions' => [
-                            'class' => 'text-center'
-                        ],
-                    ],
-                    
-                    [
-                        'attribute' => 'store_id',
-                        'filterInputOptions' => [
-                            'class' => 'form-control text-center',
-                            'placeholder' => 'Поиск...'
-                        ],
-                        'headerOptions' => [
-                            'class' => 'text-center'
-                        ],
-                        'contentOptions' => [
-                            'class' => 'text-center'
-                        ],
-                    ],
 
                     [
                         'class' => 'yii\grid\ActionColumn',
