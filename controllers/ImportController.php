@@ -32,7 +32,7 @@ class ImportController extends \yii\web\Controller
             $marketplace = new $params['class']();
             
             $marketplaceOrders = $marketplace::getOrders($dateFrom);
-echo VarDumper::dump($marketplaceOrders, 99, true); exit;
+// echo VarDumper::dump($marketplaceOrders, 99, true); exit;
             if ($marketplaceOrders) {
                 if ($marketplace::getOrdersErrors($marketplaceOrders)) {
                     $out[] = Yii::t('app', 'Ошибка получения списка заказов из {0}', $marketplaceName);
