@@ -21,13 +21,6 @@ use yii\widgets\ActiveForm;
                     ->dropDownList(array_keys(Yii::$app->params['marketplace']))
                     ->label('Маркетплейс');
             ?>
-            
-            <?= $form
-                    ->field($model, 'store_id')
-                    ->textInput([
-                        'maxlength' => true
-                    ])
-            ?>
 
             <?= $form
                     ->field($model, 'sessia_product_id')
@@ -43,12 +36,6 @@ use yii\widgets\ActiveForm;
                     ])
             ?>
             
-            <?= $form
-                    ->field($model, 'marketplace_product_id_2')
-                    ->textInput([
-                        'maxlength' => true
-                    ])
-            ?>
             <div class="text-center pt-2">
                 <?= Html::submitButton(Html::tag('i', '', [
                         'class' => 'fas fa-save'
