@@ -24,7 +24,7 @@ return [
                 'phone' => '+79000006966',
             ],
             'mailto' => [
-                'agapofff@gmail.com',
+                'dmitry.boltunov@freedomgroupint.com',
             ],
         ],
         'wildberries' => [
@@ -44,7 +44,7 @@ return [
                 'phone' => '+79000925344',
             ],
             'mailto' => [
-                'agapofff@gmail.com',
+                'dmitry.boltunov@freedomgroupint.com',
             ],
         ],
     ],
