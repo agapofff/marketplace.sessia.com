@@ -18,7 +18,7 @@ class ImportController extends \yii\web\Controller
     {
         $out = [];
         $loaded = 0;
-        $dateFrom = $date ? date('Y-m-d 00:00:00', strtotime($date)) : date('Y-m-d', strtotime('-1 month'));
+        $dateFrom = $date ? date('Y-m-d 00:00:00', strtotime($date)) : date('Y-m-d', strtotime('-6 months'));
         
         $marketplaceList = $from ? [strtolower($from)] : array_keys(Yii::$app->params['marketplace']);
 // echo VarDumper::dump($marketplaceList, 99, true); exit;
