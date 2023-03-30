@@ -44,6 +44,7 @@ class ImportController extends \yii\web\Controller
                         $storeID = null;
                         $sessiaOrderSum = $marketplaceOrderSum = 0;
                         $marketplaceOrderID = $marketplace::getOrderID($marketplaceOrder);
+                        $marketplaceOrderDate = $marketplace::getOrderDate($marketplaceOrder);
                         
                         $orderParams = [
                             'delivery_method' => 74175,
@@ -102,9 +103,10 @@ class ImportController extends \yii\web\Controller
                                             'quantity' => $marketplaceProduct['count'],
                                         ];
                                     } else {
-                                        $out[] = Yii::t('app', 'Ошибка сопоставления товара {0} с CRM при загрузке заказа {1} из {2}', [
+                                        $out[] = Yii::t('app', 'Ошибка сопоставления товара {0} с CRM при загрузке заказа {1} от {2} из {3}', [
                                             $marketplaceProduct['id'],
                                             $marketplaceOrderID,
+                                            $marketplaceOrderDate,
                                             $marketplaceName,
                                         ]);
                                     }
@@ -134,27 +136,31 @@ class ImportController extends \yii\web\Controller
                                         $order->status = 'new';
                                         
                                         if ($order->save()) {
-                                            $out[] = Yii::t('app', 'Заказ {0} из {1} успешно загружен: {2}', [
+                                            $out[] = Yii::t('app', 'Заказ {0} от {1} из {2} успешно загружен: {3}', [
                                                 $marketplaceOrderID,
+                                                $marketplaceOrderDate,
                                                 $marketplaceName,
                                                 Html::a($newOrder['id'], 'https://crm.sessia.com/shop/orders/edit/' . $newOrder['id'])
                                             ]);
                                             $loaded++;
                                         } else {
-                                            $out[] = Yii::t('app', 'Ошибка загрузки заказа {0} из {1}', [
+                                            $out[] = Yii::t('app', 'Ошибка сохранения заказа {0} от {1} из {2}', [
                                                 $marketplaceOrderID,
+                                                $marketplaceOrderDate,
                                                 $marketplaceName,
                                             ]) . ': ' . print_r($order->getErrors(), true);
                                         }
                                     } else {
-                                        $out[] = Yii::t('app', 'Ошибка загрузки заказа {0} из {1}', [
+                                        $out[] = Yii::t('app', 'Ошибка загрузки заказа {0} от {1} из {2}', [
                                             $marketplaceOrderID,
+                                            $marketplaceOrderDate,
                                             $marketplaceName,
                                         ]) . ': ' . print_r($newOrder, true); // . ' \ ' . print_r($orderParams, true) . ' \ ' . print_r($marketplaceOrder, true);
                                     }
                                 } else {
-                                    $out[] = Yii::t('app', 'Ошибка создания заказа {0} из {1} в Sessia', [
+                                    $out[] = Yii::t('app', 'Ошибка создания заказа {0} от {1} из {2} в Sessia', [
                                         $marketplaceOrderID,
+                                        $marketplaceOrderDate,
                                         $marketplaceName,
                                     ]);
                                 }
