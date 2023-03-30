@@ -32,7 +32,7 @@ class ImportController extends \yii\web\Controller
             $marketplace = new $params['class']();
             
             $marketplaceOrders = $marketplace::getOrders($dateFrom);
-echo VarDumper::dump($marketplaceOrders, 99, true); exit;
+// echo VarDumper::dump($marketplaceOrders, 99, true); exit;
             if ($marketplaceOrders) {
                 if ($marketplace::getOrdersErrors($marketplaceOrders)) {
                     $out[] = Yii::t('app', 'Ошибка получения списка заказов из {0}', $marketplaceName);
@@ -120,7 +120,7 @@ echo VarDumper::dump($marketplaceOrders, 99, true); exit;
                                 $newOrder = Sessia::createOrder($storeID, $orderParams);
                                 
                                 if ($newOrder) {
-    // echo VarDumper::dump($newOrder, 99, true); exit; 
+// echo VarDumper::dump($newOrder, 99, true); exit; 
                                     if (isset($newOrder['id'])) {
                                         $order = new Orders();
                                         $order->marketplace_id = $marketplaceID;
