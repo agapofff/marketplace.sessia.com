@@ -105,4 +105,9 @@ class Ozon
     {
         return $order['status'] == 'cancelled';
     }
+    
+    public static function getOrderDate($order)
+    {
+        return date('d.m.Y H:i', strtotime($order['shipment_date']));
+    }
 }
