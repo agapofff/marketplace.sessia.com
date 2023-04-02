@@ -139,6 +139,7 @@ class ImportController extends \yii\web\Controller
                                         $order->created_at = date('Y-m-d H:i:s');
                                         $order->updated_at = date('Y-m-d H:i:s');
                                         $order->status = 'new';
+                                        $order->order_date = $marketplaceOrderDate;
                                         
                                         if ($order->save()) {
                                             $out[] = Yii::t('app', 'Заказ {0} от {1} из {2} успешно загружен: {3}', [
