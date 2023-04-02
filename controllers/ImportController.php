@@ -77,6 +77,22 @@ class ImportController extends \yii\web\Controller
                                 $sessiaOrder->save();
                             }
                             
+                            if (!$sessiaOrder->store_id) {
+                                $marketplaceProducts = $marketplace::getOrderProducts($marketplaceOrder);
+                                foreach ($marketplaceProducts as $marketplaceProduct) {
+                                    $product = Products::findOne([
+                                        'marketplace_id' => $marketplaceID,
+                                        'marketplace_product_id' => $marketplaceProduct['id'],
+                                    ]);
+                                    if ($product) {
+                                        $sessiaProduct = Sessia::getProduct($product->sessia_product_id);
+                                        $storeID = $sessiaProduct['store']['id'];
+                                    }
+                                }
+                                $sessiaOrder->store_id = $storeID;
+                                $sessiaOrder->save();
+                            }
+                            
                             if ($marketplace::isOrderCancelled($marketplaceOrder) && $sessiaOrder->status !== 'cancel') {
                                 $sessiaOrder->status = 'cancel';
                                 $sessiaOrder->updated_at = date('Y-m-d H:i:s');
@@ -140,6 +156,7 @@ class ImportController extends \yii\web\Controller
                                         $order->updated_at = date('Y-m-d H:i:s');
                                         $order->status = 'new';
                                         $order->order_date = $marketplaceOrderDate;
+                                        $order->store_id = $storeID;
                                         
                                         if ($order->save()) {
                                             $out[] = Yii::t('app', 'Заказ {0} от {1} из {2} успешно загружен: {3}', [
