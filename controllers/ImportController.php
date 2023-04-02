@@ -84,10 +84,8 @@ class ImportController extends \yii\web\Controller
                                         'marketplace_id' => $marketplaceID,
                                         'marketplace_product_id' => $marketplaceProduct['id'],
                                     ]);
-                                    if ($product) {
-                                        $sessiaProduct = Sessia::getProduct($product->sessia_product_id);
-                                        $storeID = $sessiaProduct['store']['id'];
-                                    }
+                                    $sessiaProduct = Sessia::getProduct($product->sessia_product_id);
+                                    $storeID = $sessiaProduct['store']['id'];
                                 }
                                 $sessiaOrder->store_id = $storeID;
                                 $sessiaOrder->save();
