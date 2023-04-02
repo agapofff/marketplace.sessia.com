@@ -16,6 +16,7 @@ use Yii;
  * @property int|null $sum
  * @property string|null $created_at
  * @property string|null $updated_at
+ * @property string|null $order_date
  * @property int $status
  */
 class Orders extends \yii\db\ActiveRecord
@@ -37,7 +38,7 @@ class Orders extends \yii\db\ActiveRecord
             [['marketplace_id', 'status'], 'required'],
             [['marketplace_id', 'sum'], 'integer'],
             [['request', 'response', 'status'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'order_date'], 'safe'],
             [['marketplace_order_id', 'sessia_order_id'], 'string', 'max' => 100],
         ];
     }
@@ -57,6 +58,7 @@ class Orders extends \yii\db\ActiveRecord
             'sum' => Yii::t('back', 'Сумма'),
             'created_at' => Yii::t('back', 'Дата создания'),
             'updated_at' => Yii::t('back', 'Дата изменения'),
+            'order_date' => Yii::t('back', 'Дата заказа'),
             'status' => Yii::t('back', 'Статус заказа'),
         ];
     }

@@ -25,6 +25,7 @@ return [
             ],
             'mailto' => [
                 'dmitry.boltunov@freedomgroupint.com',
+                'sessia.marketplace@yandex.ru',
             ],
         ],
         'wildberries' => [
@@ -45,6 +46,7 @@ return [
             ],
             'mailto' => [
                 'dmitry.boltunov@freedomgroupint.com',
+                'sessia.marketplace@yandex.ru',
             ],
         ],
     ],

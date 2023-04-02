@@ -18,7 +18,7 @@ class OrdersSearch extends Orders
     {
         return [
             [['id', 'marketplace_id', 'sum', 'status'], 'integer'],
-            [['marketplace_order_id', 'sessia_order_id', 'request', 'response', 'created_at', 'updated_at'], 'safe'],
+            [['marketplace_order_id', 'sessia_order_id', 'request', 'response', 'created_at', 'updated_at', 'order_date'], 'safe'],
         ];
     }
 
@@ -68,6 +68,7 @@ class OrdersSearch extends Orders
             'sum' => $this->sum,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'order_date' => $this->order_date,
             'status' => $this->status,
         ]);
 
