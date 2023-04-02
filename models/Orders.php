@@ -37,8 +37,8 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             [['marketplace_id', 'status'], 'required'],
-            [['marketplace_id', 'sum'], 'integer'],
-            [['request', 'response', 'status', 'store_id'], 'string'],
+            [['marketplace_id', 'sum', 'store_id'], 'integer'],
+            [['request', 'response', 'status'], 'string'],
             [['created_at', 'updated_at', 'order_date'], 'safe'],
             [['marketplace_order_id', 'sessia_order_id'], 'string', 'max' => 100],
         ];

@@ -17,8 +17,8 @@ class OrdersSearch extends Orders
     public function rules()
     {
         return [
-            [['id', 'marketplace_id', 'sum',], 'integer'],
-            [['marketplace_order_id', 'sessia_order_id', 'request', 'response', 'created_at', 'updated_at', 'order_date', 'status', 'store_id'], 'safe'],
+            [['id', 'marketplace_id', 'sum', 'store_id'], 'integer'],
+            [['marketplace_order_id', 'sessia_order_id', 'request', 'response', 'created_at', 'updated_at', 'order_date', 'status',], 'safe'],
         ];
     }
 
