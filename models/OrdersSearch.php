@@ -17,8 +17,8 @@ class OrdersSearch extends Orders
     public function rules()
     {
         return [
-            [['id', 'marketplace_id', 'sum', 'status'], 'integer'],
-            [['marketplace_order_id', 'sessia_order_id', 'request', 'response', 'created_at', 'updated_at', 'order_date'], 'safe'],
+            [['id', 'marketplace_id', 'sum',], 'integer'],
+            [['marketplace_order_id', 'sessia_order_id', 'request', 'response', 'created_at', 'updated_at', 'order_date', 'status', 'store_id'], 'safe'],
         ];
     }
 
@@ -70,6 +70,7 @@ class OrdersSearch extends Orders
             'updated_at' => $this->updated_at,
             'order_date' => $this->order_date,
             'status' => $this->status,
+            'store_id' => $this->store_id,
         ]);
 
         $query->andFilterWhere(['like', 'marketplace_order_id', $this->marketplace_order_id])

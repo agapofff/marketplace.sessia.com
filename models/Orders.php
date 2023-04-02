@@ -13,6 +13,7 @@ use Yii;
  * @property string|null $sessia_order_id
  * @property string|null $request
  * @property string|null $response
+ * @property string|null $store_id
  * @property int|null $sum
  * @property string|null $created_at
  * @property string|null $updated_at
@@ -37,7 +38,7 @@ class Orders extends \yii\db\ActiveRecord
         return [
             [['marketplace_id', 'status'], 'required'],
             [['marketplace_id', 'sum'], 'integer'],
-            [['request', 'response', 'status'], 'string'],
+            [['request', 'response', 'status', 'store_id'], 'string'],
             [['created_at', 'updated_at', 'order_date'], 'safe'],
             [['marketplace_order_id', 'sessia_order_id'], 'string', 'max' => 100],
         ];
@@ -49,17 +50,18 @@ class Orders extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('back', 'ID'),
-            'marketplace_id' => Yii::t('back', 'Маркетплейс'),
-            'marketplace_order_id' => Yii::t('back', 'Заказ в маркетплейсе'),
-            'sessia_order_id' => Yii::t('back', 'Заказ в CRM'),
-            'request' => Yii::t('back', 'Запрос'),
-            'response' => Yii::t('back', 'Ответ'),
-            'sum' => Yii::t('back', 'Сумма'),
-            'created_at' => Yii::t('back', 'Дата создания'),
-            'updated_at' => Yii::t('back', 'Дата изменения'),
-            'order_date' => Yii::t('back', 'Дата заказа'),
-            'status' => Yii::t('back', 'Статус заказа'),
+            'id' => Yii::t('app', 'ID'),
+            'marketplace_id' => Yii::t('app', 'Маркетплейс'),
+            'marketplace_order_id' => Yii::t('app', 'Заказ в маркетплейсе'),
+            'sessia_order_id' => Yii::t('app', 'Заказ в CRM'),
+            'request' => Yii::t('app', 'Запрос'),
+            'response' => Yii::t('app', 'Ответ'),
+            'sum' => Yii::t('app', 'Сумма'),
+            'created_at' => Yii::t('app', 'Дата создания'),
+            'updated_at' => Yii::t('app', 'Дата изменения'),
+            'order_date' => Yii::t('app', 'Дата заказа'),
+            'store_id' => Yii::t('app', 'Магазин'),
+            'status' => Yii::t('app', 'Статус заказа'),
         ];
     }
 }
