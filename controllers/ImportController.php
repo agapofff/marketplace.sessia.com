@@ -85,6 +85,7 @@ class ImportController extends \yii\web\Controller
                                         'marketplace_product_id' => $marketplaceProduct['id'],
                                     ]);
                                     $sessiaProduct = Sessia::getProduct($product->sessia_product_id);
+echo VarDumper::dump($sessiaProduct, 99, true); exit;
                                     $storeID = $sessiaProduct['store']['id'];
                                 }
                                 $sessiaOrder->store_id = $storeID;
