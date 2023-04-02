@@ -108,6 +108,6 @@ class Ozon
     
     public static function getOrderDate($order)
     {
-        return date('d.m.Y H:i', strtotime($order['shipment_date']));
+        return date('Y-m-d H:i:s', strtotime($order['shipment_date']));
     }
 }

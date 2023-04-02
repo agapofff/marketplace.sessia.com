@@ -72,6 +72,11 @@ class ImportController extends \yii\web\Controller
                         ]);
                         
                         if ($sessiaOrder) {
+                            if (!$sessiaOrder->order_date) {
+                                $sessiaOrder->order_date = $marketplaceOrderDate;
+                                $sessiaOrder->save();
+                            }
+                            
                             if ($marketplace::isOrderCancelled($marketplaceOrder) && $sessiaOrder->status !== 'cancel') {
                                 $sessiaOrder->status = 'cancel';
                                 $sessiaOrder->updated_at = date('Y-m-d H:i:s');

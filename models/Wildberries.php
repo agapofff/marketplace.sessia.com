@@ -124,6 +124,6 @@ class Wildberries
     
     public static function getOrderDate($order)
     {
-        return date('d.m.Y H:i', strtotime($order['date']));
+        return date('Y-m-d H:i:s', strtotime($order['date']));
     }
 }
