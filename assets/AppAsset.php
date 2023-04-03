@@ -23,6 +23,7 @@ class AppAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
+        '//www.gstatic.com/charts/loader.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

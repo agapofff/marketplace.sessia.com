@@ -10,6 +10,10 @@ return [
         'url' => 'https://api.sessia.com/api',
     ],    
     'marketplaceImportLimit' => 10, // сколько заказов заливать за одну синхронизацию
+    'stores' => [
+        6641 => 'NRK87.',
+        8291 => 'UME',
+    ],
     'marketplace' => [
         'ozon' => [
             'active' => true,
