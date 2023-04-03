@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
@@ -135,13 +136,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                     [
                         'attribute' => 'store_id',
-                        'filter' => Html::activeDropDownList($searchModel, 'store_id', array_combine($stores, $stores), [
+                        'filter' => Html::activeDropDownList(
+                            $searchModel, 
+                            'store_id', 
+                            ArrayHelper::map(Yii::$app->params['stores'], 'id', 'name'), 
+                            [
                                 'class' => 'form-control',
                                 'prompt' => Yii::t('back', 'Все'),
                             ]
                         ),
                         'value' => function ($model) {
-                            return Yii::$app->params['stores'][$model->store_id]['name'];
+                            foreach (Yii::$app->params['stores'] as $store) {
+                                if ($store['id'] == $model->store_id) {
+                                    return $store['name'];
+                                }
+                            }
                         },
                         'filterInputOptions' => [
                             'class' => 'form-control text-center',

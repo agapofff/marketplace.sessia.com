@@ -11,11 +11,13 @@ return [
     ],    
     'marketplaceImportLimit' => 10, // сколько заказов заливать за одну синхронизацию
     'stores' => [
-        6641 => [
+        [
+            'id' => 6641,
             'name' => 'NRK87.',
             'email' => 'info@nrk87.com',
         ],
-        8291 => [
+        [
+            'id' => 8291,
             'name' => 'UME',
             'email' => 'info@ume.pet',
         ],

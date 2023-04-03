@@ -83,86 +83,74 @@ class SiteController extends Controller
         }
         
         $reports = [];
-        
-        $stores = Orders::find()
-            ->select('store_id')
-            ->groupBy('store_id')
-            ->column();
             
         $marketplaces = array_keys(Yii::$app->params['marketplace']);
             
         // orders by stores
-        $query = ['DATE_FORMAT(order_date, "%Y.%m") as date'];
-        foreach ($stores as $store_id) {
-            $store = Yii::$app->params['stores'][$store_id]['name'];
-            $query[] = "SUM(CASE WHEN store_id = $store_id THEN sum ELSE 0 END) AS '$store'";
-        }
-        $orders = Orders::find()
-            ->select($query)
-            ->groupBy('date')
-            ->asArray();
-        
-        $reports[] = [
-            'name' => Yii::t('app', 'Все маркетплейсы'),
-            'data' => $orders->all()
-        ];
-        
-        foreach ($marketplaces as $mpKey => $mpName) {
+        for ($i = 0; $i < 2; $i++) {
+            $query = ['DATE_FORMAT(order_date, "%Y.%m") as date'];
+            foreach (Yii::$app->params['stores'] as $store) {
+                $query[] = ($i ? 'COUNT' : 'SUM') . "(CASE WHEN store_id = " . $store['id'] . " THEN sum ELSE 0 END) AS '" . $store['name'] . "'";
+            }
+            $orders = Orders::find()
+                ->select($query)
+                ->groupBy('date')
+                ->asArray();
+            
             $reports[] = [
-                'name' => ucfirst($mpName),
-                'data' => $orders
-                    ->where([
-                        'marketplace_id' => $mpKey
-                    ])
-                    ->all()
+                'name' => Yii::t('app', 'Все маркетплейсы'),
+                'data' => $orders->all()
             ];
-        }
-        
-        // orders by marketplaces
-        $query = ['DATE_FORMAT(order_date, "%Y.%m") as date'];
-        foreach ($marketplaces as $mpKey => $mpName) {
-            $mpName = ucfirst($mpName);
-            $query[] = "SUM(CASE WHEN marketplace_id = $mpKey THEN sum ELSE 0 END) AS '$mpName'";
-        }
-        $orders = Orders::find()
-            ->select($query)
-            ->groupBy('date')
-            ->asArray();
-        
-        $reports[] = [
-            'name' => Yii::t('app', 'Все магазины'),
-            'data' => $orders->all()
-        ];
-        
-        foreach ($stores as $store_id) {
+            
+            foreach ($marketplaces as $mpKey => $mpName) {
+                $reports[] = [
+                    'name' => ucfirst($mpName),
+                    'data' => $orders
+                        ->where([
+                            'marketplace_id' => $mpKey
+                        ])
+                        ->all()
+                ];
+            }
+            
+            // orders by marketplaces
+            $query = ['DATE_FORMAT(order_date, "%Y.%m") as date'];
+            foreach ($marketplaces as $mpKey => $mpName) {
+                $mpName = ucfirst($mpName);
+                $query[] = ($i ? 'COUNT' : 'SUM') . "(CASE WHEN marketplace_id = $mpKey THEN sum ELSE 0 END) AS '$mpName'";
+            }
+            $orders = Orders::find()
+                ->select($query)
+                ->groupBy('date')
+                ->asArray();
+            
             $reports[] = [
-                'name' => Yii::$app->params['stores'][$store_id]['name'],
-                'data' => $orders
-                    ->where([
-                        'store_id' => $store_id
-                    ])
-                    ->all()
+                'name' => Yii::t('app', 'Все магазины'),
+                'data' => $orders->all()
             ];
+            
+            foreach (Yii::$app->params['stores'] as $store) {
+                $reports[] = [
+                    'name' => $store['name'],
+                    'data' => $orders
+                        ->where([
+                            'store_id' => $store['id']
+                        ])
+                        ->all()
+                ];
+            }
         }
         
         foreach ($reports as $r => $report) {
             $rows = [array_keys($report['data'][0])];
             foreach ($report['data'] as $d => $data) {
-                // $trans[] = array_values($data);
                 $row = [];
                 foreach ($data as $v => $val) {
                     $row[] = $v == 'date' ? $val : (int)$val;
                 }
                 $rows[] = $row;
             }
-            $reports[$r]['data'] = $rows;
-        }
-        
-        foreach ($reports as $r => $report) {
-            $reports[$r] = [
-                'name' => $report['name'],
-                'data' => json_encode($report['data'])
-            ];
+            $reports[$r]['data'] = json_encode($rows);
         }
             
 // echo VarDumper::dump($reports, 99, true); exit;
