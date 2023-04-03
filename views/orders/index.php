@@ -29,10 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     Html::a(Html::tag('i', '', ['class' => 'fas fa-redo']), ['/orders'], ['class' => 'btn btn-outline-secondary']),
                 ],
                 'panel' => [
-                    'heading' => '<h5 class="panel-title mb-0">' . Yii::t('app', 'Товары') . '</h5>',
+                    'heading' => '<h5 class="panel-title mb-0">' . Yii::t('app', 'Заказы') . '</h5>',
                     'type' => 'default',
-                    'before' => Html::a(Html::tag('i', '&nbsp;', ['class' => 'fas fa-plus']) . Yii::t('app', 'Добавить'), ['create'], [
-                        'class' => 'btn btn-success',
+                    'before' => Html::a(Html::tag('i', '&nbsp;', ['class' => 'fas fa-chart-line']) . Yii::t('app', 'Графики'), ['/'], [
+                        'class' => 'btn btn-info',
                         'data-pjax' => 0,
                     ]),
                     'after' => false,
@@ -116,10 +116,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     
                     [
-                        'attribute' => 'created_at',
+                        'attribute' => 'order_date',
                         'format' => 'raw', 
                         'value' => function ($model) {
-                            return Yii::$app->formatter->asDatetime($model->created_at);
+                            return Yii::$app->formatter->asDatetime($model->order_date);
                         },
                         'filterInputOptions' => [
                             'class' => 'form-control text-center',
@@ -132,6 +132,28 @@ $this->params['breadcrumbs'][] = $this->title;
                             'class' => 'text-center'
                         ],
                     ],
+                    
+                    [
+                        'attribute' => 'store_id',
+                        'filter' => Html::activeDropDownList($searchModel, 'store_id', array_combine($stores, $stores), [
+                                'class' => 'form-control',
+                                'prompt' => Yii::t('back', 'Все'),
+                            ]
+                        ),
+                        'value' => function ($model) {
+                            return Yii::$app->params['stores'][$model->store_id]['name'];
+                        },
+                        'filterInputOptions' => [
+                            'class' => 'form-control text-center',
+                            'placeholder' => 'Поиск...'
+                        ],
+                        'headerOptions' => [
+                            'class' => 'text-center'
+                        ],
+                        'contentOptions' => [
+                            'class' => 'text-center'
+                        ],
+                    ],                    
                     
                     [
                         'attribute' => 'status',

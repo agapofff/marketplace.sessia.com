@@ -47,10 +47,16 @@ class OrdersController extends Controller
     {
         $searchModel = new OrdersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        $stores = Orders::find()
+            ->select('store_id')
+            ->groupBy('store_id')
+            ->column();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'stores' => $stores,
         ]);
     }
 

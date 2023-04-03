@@ -94,7 +94,7 @@ class SiteController extends Controller
         // orders by stores
         $query = ['DATE_FORMAT(order_date, "%Y.%m") as date'];
         foreach ($stores as $store_id) {
-            $store = Yii::$app->params['stores'][$store_id];
+            $store = Yii::$app->params['stores'][$store_id]['name'];
             $query[] = "SUM(CASE WHEN store_id = $store_id THEN sum ELSE 0 END) AS '$store'";
         }
         $orders = Orders::find()
@@ -136,7 +136,7 @@ class SiteController extends Controller
         
         foreach ($stores as $store_id) {
             $reports[] = [
-                'name' => Yii::$app->params['stores'][$store_id],
+                'name' => Yii::$app->params['stores'][$store_id]['name'],
                 'data' => $orders
                     ->where([
                         'store_id' => $store_id
