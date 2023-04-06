@@ -171,6 +171,7 @@ class ImportController extends \yii\web\Controller
                                                 $marketplaceOrderDate,
                                                 $marketplaceName,
                                             ]) . ': ' . print_r($order->getErrors(), true);
+echo VarDumper::dump($out, 99, true); exit;
                                         }
                                     } else {
                                         $out[] = Yii::t('app', 'Ошибка загрузки заказа {0} от {1} из {2}', [
