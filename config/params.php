@@ -26,6 +26,11 @@ return [
             'name' => 'ProjectV',
             'email' => 'info@projectvint.ru',
         ],
+        [
+            'id' => 6232,
+            'name' => 'CoffeeCell',
+            'email' => 'info@coffeecell.com',
+        ],
     ],
     'marketplace' => [
         'ozon' => [
