@@ -21,6 +21,11 @@ return [
             'name' => 'UME',
             'email' => 'info@ume.pet',
         ],
+        [
+            'id' => 6278,
+            'name' => 'ProjectV',
+            'email' => 'info@projectvint.ru',
+        ],
     ],
     'marketplace' => [
         'ozon' => [
