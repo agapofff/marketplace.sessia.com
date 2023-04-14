@@ -99,6 +99,11 @@ class ImportController extends \yii\web\Controller
                                 // todo: метод смены статуса заказа в CRM
                             }
                         } else {
+                            // не заливать новые отменённые заказы
+                            if ($marketplace::isOrderCancelled($marketplaceOrder)) {
+                                continue;
+                            }
+                            
                             $marketplaceProducts = $marketplace::getOrderProducts($marketplaceOrder);
 // echo VarDumper::dump($marketplaceProducts, 99, true); exit;
                             foreach ($marketplaceProducts as $marketplaceProduct) {
