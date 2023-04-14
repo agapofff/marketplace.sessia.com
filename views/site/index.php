@@ -5,7 +5,7 @@
 $this->title = 'SESSIA Marketplace';
 ?>
 <div class="site-index">
-    <h2 class="text-center">
+    <h2 class="text-center d-none">
         <?= Yii::t('app', 'По суммам') ?>
     </h2>
     
@@ -18,7 +18,7 @@ $this->title = 'SESSIA Marketplace';
 
     <br>
     <br>
-
+    <!--
     <h2 class="text-center">
         <?= Yii::t('app', 'По количеству') ?>
     </h2>
@@ -29,6 +29,7 @@ $this->title = 'SESSIA Marketplace';
     <div id="report-9" class="my-3"></div>
     <div id="report-10" class="my-3"></div>
     <div id="report-11" class="my-3"></div>
+    -->
 </div>
 
 <?php
