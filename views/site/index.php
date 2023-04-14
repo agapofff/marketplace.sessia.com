@@ -8,27 +8,26 @@ $this->title = 'SESSIA Marketplace';
     <h2 class="text-center d-none">
         <?= Yii::t('app', 'По суммам') ?>
     </h2>
-    
-    <div id="report-0" class="my-3" style="height: 50vh"></div>
-    <div id="report-1" class="my-3"></div>
-    <div id="report-2" class="my-3"></div>
-    <div id="report-3" class="my-3"></div>
-    <div id="report-4" class="my-3"></div>
-    <div id="report-5" class="my-3"></div>
-
+<?php
+    for ($i = 0; $i < 6; %i++) {
+?>
+        <div id="report-<?= $i ?>" class="my-3" style="height: 50vh"></div>
+<?php
+    }
+?>
     <br>
     <br>
     <!--
     <h2 class="text-center">
         <?= Yii::t('app', 'По количеству') ?>
     </h2>
-    
-    <div id="report-6" class="my-3"></div>
-    <div id="report-7" class="my-3"></div>
-    <div id="report-8" class="my-3"></div>
-    <div id="report-9" class="my-3"></div>
-    <div id="report-10" class="my-3"></div>
-    <div id="report-11" class="my-3"></div>
+<?php
+    for ($i = 6; $i < 12; %i++) {
+?>
+        <div id="report-<?= $i ?>" class="my-3" style="height: 50vh"></div>
+<?php
+    }
+?>
     -->
 </div>
 
