@@ -9,7 +9,7 @@ $this->title = 'SESSIA Marketplace';
         <?= Yii::t('app', 'По суммам') ?>
     </h2>
 <?php
-    for ($i = 0; $i < 6; %i++) {
+    for ($i = 0; $i < 6; $i++) {
 ?>
         <div id="report-<?= $i ?>" class="my-3" style="height: 50vh"></div>
 <?php
@@ -22,7 +22,7 @@ $this->title = 'SESSIA Marketplace';
         <?= Yii::t('app', 'По количеству') ?>
     </h2>
 <?php
-    for ($i = 6; $i < 12; %i++) {
+    for ($i = 6; $i < 12; $i++) {
 ?>
         <div id="report-<?= $i ?>" class="my-3" style="height: 50vh"></div>
 <?php
