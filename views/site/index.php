@@ -9,7 +9,7 @@ $this->title = 'SESSIA Marketplace';
         <?= Yii::t('app', 'По суммам') ?>
     </h2>
     
-    <div id="report-0" class="my-3"></div>
+    <div id="report-0" class="my-3" style="height: 50vh"></div>
     <div id="report-1" class="my-3"></div>
     <div id="report-2" class="my-3"></div>
     <div id="report-3" class="my-3"></div>
