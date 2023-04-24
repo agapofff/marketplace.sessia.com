@@ -173,9 +173,9 @@ class ImportController extends \yii\web\Controller
                                                 $marketplaceName,
                                                 Html::a($newOrder['id'], 'https://crm.sessia.com/shop/orders/edit/' . $newOrder['id'])
                                             ]);
-// if ($discount < 0) {
-    // $out[] = 'Отрицательная скидка в заказе ' . $marketplaceOrderID . ' https://crm.sessia.com/shop/orders/edit/' . $newOrder['id'];
-// }
+if ($discount < 0) {
+    $out[] = 'Отрицательная скидка в заказе ' . $newOrder['id'];
+}
                                             $loaded++;
                                         } else {
                                             $out[] = Yii::t('app', 'Ошибка сохранения заказа {0} от {1} из {2}', [
