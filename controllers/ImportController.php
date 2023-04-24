@@ -66,10 +66,10 @@ class ImportController extends \yii\web\Controller
                             'comment' => $marketplaceOrderID,
                         ];
                         
-                        $sessiaOrder = Orders::findOne([
-                            'marketplace_id' => $marketplaceID,
-                            'marketplace_order_id' => $marketplaceOrderID,
-                        ]);
+                        // $sessiaOrder = Orders::findOne([
+                            // 'marketplace_id' => $marketplaceID,
+                            // 'marketplace_order_id' => $marketplaceOrderID,
+                        // ]);
                         
                         if ($sessiaOrder) {
                             if (!$sessiaOrder->order_date) {
@@ -143,7 +143,11 @@ class ImportController extends \yii\web\Controller
                                 $discount = $sessiaOrderSum - $marketplaceOrderSum;
                                 // $orderParams['ext_discount'] = $discount > 0 ? $discount : 0;
                                 $orderParams['ext_discount'] = $sessiaOrderSum - $marketplaceOrderSum;
-                                
+if ($discount < 0) {
+    $newOrder = Sessia::createOrder($storeID, $orderParams);
+} else {
+    continue;
+}
                                 $newOrder = Sessia::createOrder($storeID, $orderParams);
                                 
                                 if ($newOrder) {
