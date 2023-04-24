@@ -66,10 +66,10 @@ class ImportController extends \yii\web\Controller
                             'comment' => $marketplaceOrderID,
                         ];
                         
-                        // $sessiaOrder = Orders::findOne([
-                            // 'marketplace_id' => $marketplaceID,
-                            // 'marketplace_order_id' => $marketplaceOrderID,
-                        // ]);
+                        $sessiaOrder = Orders::findOne([
+                            'marketplace_id' => $marketplaceID,
+                            'marketplace_order_id' => $marketplaceOrderID,
+                        ]);
                         
                         if ($sessiaOrder) {
                             if (!$sessiaOrder->order_date) {
