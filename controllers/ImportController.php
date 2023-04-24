@@ -141,8 +141,8 @@ class ImportController extends \yii\web\Controller
                             if (!empty($orderProducts)) {
                                 $orderParams['products'] = $orderProducts;
                                 $discount = $sessiaOrderSum - $marketplaceOrderSum;
-                                $orderParams['ext_discount'] = $discount > 0 ? $discount : 0;
-                                // $orderParams['ext_discount'] = $sessiaOrderSum - $marketplaceOrderSum;
+                                // $orderParams['ext_discount'] = $discount > 0 ? $discount : 0;
+                                $orderParams['ext_discount'] = $sessiaOrderSum - $marketplaceOrderSum;
                                 
                                 $newOrder = Sessia::createOrder($storeID, $orderParams);
                                 
