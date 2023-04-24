@@ -142,9 +142,6 @@ class ImportController extends \yii\web\Controller
                                 $orderParams['products'] = $orderProducts;
                                 $discount = $sessiaOrderSum - $marketplaceOrderSum;
                                 // $orderParams['ext_discount'] = $discount > 0 ? $discount : 0;
-if ($discount < 0) {
-    echo VarDumper::dump($marketplaceOrder, 99, true); exit;
-}
                                 $orderParams['ext_discount'] = $sessiaOrderSum - $marketplaceOrderSum;
                                 
                                 $newOrder = Sessia::createOrder($storeID, $orderParams);
@@ -172,6 +169,9 @@ if ($discount < 0) {
                                                 $marketplaceName,
                                                 Html::a($newOrder['id'], 'https://crm.sessia.com/shop/orders/edit/' . $newOrder['id'])
                                             ]);
+if ($discount < 0) {
+    $out[] = 'Отрицательная скидка в заказе ' . $marketplaceOrderID . ' https://crm.sessia.com/shop/orders/edit/' . $newOrder['id'];
+}
                                             $loaded++;
                                         } else {
                                             $out[] = Yii::t('app', 'Ошибка сохранения заказа {0} от {1} из {2}', [
