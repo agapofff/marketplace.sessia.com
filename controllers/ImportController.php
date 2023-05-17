@@ -32,7 +32,7 @@ class ImportController extends \yii\web\Controller
             $marketplace = new $params['class']();
             
             $marketplaceOrders = $marketplace::getOrders($dateFrom);
-// echo VarDumper::dump($marketplaceOrders, 99, true); exit;
+echo VarDumper::dump($marketplaceOrders, 99, true); exit;
             if ($marketplaceOrders) {
                 if ($marketplace::getOrdersErrors($marketplaceOrders)) {
                     $out[] = Yii::t('app', 'Ошибка получения списка заказов из {0}', $marketplaceName);
@@ -56,7 +56,7 @@ class ImportController extends \yii\web\Controller
                                 'address1' => 'Москва',
                                 'full_name' => $params['user']['name'],
                             ],
-                            'payment_service' => 5,
+                            'payment_service' => 7,
                             'name' => $params['user']['name'],
                             'email' => $params['user']['email'],
                             'country_code' => '+7',
