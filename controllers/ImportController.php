@@ -32,7 +32,7 @@ class ImportController extends \yii\web\Controller
             $marketplace = new $params['class']();
             
             $marketplaceOrders = $marketplace::getOrders($dateFrom);
-echo VarDumper::dump($marketplaceOrders, 99, true); exit;
+// echo VarDumper::dump($marketplaceOrders, 99, true); exit;
             if ($marketplaceOrders) {
                 if ($marketplace::getOrdersErrors($marketplaceOrders)) {
                     $out[] = Yii::t('app', 'Ошибка получения списка заказов из {0}', $marketplaceName);
@@ -173,9 +173,11 @@ echo VarDumper::dump($marketplaceOrders, 99, true); exit;
                                                 $marketplaceName,
                                                 Html::a($newOrder['id'], 'https://crm.sessia.com/shop/orders/edit/' . $newOrder['id'])
                                             ]);
-if ($discount < 0) {
-    $out[] = 'Отрицательная скидка в заказе ' . $newOrder['id'];
-}
+                                            
+                                            if ($discount < 0) {
+                                                $out[] = 'Отрицательная скидка в заказе ' . $newOrder['id'];
+                                            }
+                                            
                                             $loaded++;
                                         } else {
                                             $out[] = Yii::t('app', 'Ошибка сохранения заказа {0} от {1} из {2}', [
