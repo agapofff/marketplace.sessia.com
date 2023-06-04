@@ -46,6 +46,8 @@ class ImportController extends \yii\web\Controller
                         $marketplaceOrderID = $marketplace::getOrderID($marketplaceOrder);
                         $marketplaceOrderDate = $marketplace::getOrderDate($marketplaceOrder);
                         
+                        if (in_array($marketplaceOrderID, Yii::$app->params['skip'])) continue;
+                        
                         $orderParams = [
                             'delivery_method' => 74175,
                             'delivery_address' => [
